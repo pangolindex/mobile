@@ -13,6 +13,7 @@ const styles = ScaledSheet.create({
     textContainer: {
         alignItems: 'center',
     },
+    
     name: {
         fontFamily: font.bold,
         color: color.black

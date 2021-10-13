@@ -2,7 +2,7 @@ import { ScaledSheet } from 'react-native-size-matters'
 import color from './color'
 const styles = ScaledSheet.create({
     space: {
-        height: '40%',
+        // height: '20%',
         width: '100%'
     },
     halfSpace: {

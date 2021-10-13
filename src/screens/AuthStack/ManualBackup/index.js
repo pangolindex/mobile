@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, ScrollView,Dimensions } from 'react-native'
 import GradientContainer from '../../../components/GradientContainer'
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -11,7 +11,14 @@ import icon from '../../../assets/icons'
 import Box from '../../../components/box'
 import Button from '../../../components/button'
 
-const data = [
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+    listenOrientationChange as loc,
+    removeOrientationListener as rol
+  } from 'react-native-responsive-screen';
+
+  const data = [
     {
         id: 1,
         name: 'tongue'
@@ -61,14 +68,40 @@ const data = [
         name: 'palace'
     },
 ]
-const ManualBackup = ({ navigation }) => {
-    const [isSelected, setIsSelected] = useState(false)
-    const [reset, setReset] = useState(false)
+
+
+    
+    export default class App extends React.Component {
+
+    
+        constructor(props)
+            {
+                super(props);
+                this.state = { isSelected : false,  reset: false};
+            }
+        componentDidMount() {
+          loc(this);
+        }
+        
+        componentWillUnMount() {
+          rol();
+        }
+    
+    
+        
+      render() {
+        const {navigation} = this.props;
+        const {isSelected,reset} = this.state;
+        var width = Dimensions.get('window').width; //full width
+        var height = Dimensions.get('window').height; //full height
     return (
         <GradientContainer small>
 
             <View style={styles.container}>
-                <View style={Style.halfSpace} />
+                {/* <View style={Style.halfSpace} /> */}
+                <ScrollView style={{width:'100%'}}>
+                {/* <View style={Style.halfSpace} /> */}
+                <View style={{paddingTop:Math.ceil(width) > Math.ceil(height) ? hp('5%') : hp('10%')}}>
                 <View style={styles.contentContainer}>
                     <View style={Style.flex} />
                     <View style={[Style.filled_outer, { backgroundColor: 'rgba(255, 107, 0, .1)' }]}>
@@ -119,7 +152,7 @@ const ManualBackup = ({ navigation }) => {
                     ListFooterComponent={() => (
                         <>
 
-                            <TouchableOpacity onPress={() => { setReset(true); setIsSelected(false) }} style={styles.restBox}>
+                            <TouchableOpacity onPress={() => { this.setState({reset:true}); this.setState({isSelected:false}) }} style={styles.restBox}>
                                 <Icon style={styles.reset} name="ios-reload-sharp" />
                                 <Text style={styles.resetText}> Reset all</Text>
 
@@ -138,19 +171,21 @@ const ManualBackup = ({ navigation }) => {
                         <View style={Style.flex} />
 
                         <View style={[Style.align, { paddingHorizontal: 13 }]}>
-                            {!reset ?
-                                <Button text="Next" click={() => setIsSelected(true)} />
-                                : <Button text="Done" click={() => navigation.navigate('Start')} />
-                            }
+                            {/* {!reset ?
+                                <Button text="Next" click={() => this.setState({isSelected:false})} /> */}
+                                {/* :  */}
+                                <Button text="Done" click={() => navigation.navigate('MainWallet')} />
+                            {/* } */}
                         </View>
                         <View style={Style.flex} />
 
                     </View>
                 }
-
+            </View>
+            </ScrollView>
             </View>
         </GradientContainer>
     )
 }
 
-export default ManualBackup
+}

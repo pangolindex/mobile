@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, ActivityIndicator, Modal } from 'react-native'
+import { View, Text, TouchableOpacity, ActivityIndicator, Modal, ScrollView,Dimensions } from 'react-native'
 import GradientContainer from '../../../components/GradientContainer'
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 
@@ -14,16 +14,46 @@ import AuthHeader from '../../../components/AuthHeader'
 import Loader from '../../../components/Loader'
 import Button from '../../../components/button'
 
+    import {
+        widthPercentageToDP as wp,
+        heightPercentageToDP as hp,
+        listenOrientationChange as loc,
+        removeOrientationListener as rol
+      } from 'react-native-responsive-screen';
+    
+    
+    export default class App extends React.Component {
 
-const ProtectWallet = ({ navigation }) => {
-    const [loading, setLoading] = useState(false)
-    const [code, setCode] = useState("")
+    
+        constructor(props)
+            {
+                super(props);
+                this.state = { loading : false,  code:''};
+            }
+        componentDidMount() {
+          loc(this);
+        }
+        
+        componentWillUnMount() {
+          rol();
+        }
+    
+    
+        
+      render() {
+        const {navigation} = this.props;
+        const {loading,code} = this.state;
+        var width = Dimensions.get('window').width; //full width
+        var height = Dimensions.get('window').height; //full height
 
     return (
         <GradientContainer small>
 
             <View style={styles.container}>
-                <View style={Style.halfSpace} />
+                {/* <View style={Style.halfSpace} /> */}
+                <ScrollView style={{width:'100%'}}>
+                {/* <View style={Style.halfSpace} /> */}
+                <View style={{paddingTop:Math.ceil(width) > Math.ceil(height) ? hp('5%') : hp('10%')}}>
                 <AuthHeader click={() => navigation.goBack()} />
 
                 <View style={styles.contentContainer}>
@@ -55,7 +85,7 @@ const ProtectWallet = ({ navigation }) => {
                         autoFocus
                         animated
                         value={code}
-                        onTextChange={code => setCode(code)}
+                        onTextChange={code => this.setState({code})}
                     />
                 </View>
                 <View style={Style.flex} />
@@ -63,9 +93,10 @@ const ProtectWallet = ({ navigation }) => {
                     <Button text="Save" click={() => navigation.navigate('BackupWallet')} />
                 </View>
                 <Loader loading={loading} />
+                </View>
+                </ScrollView>
             </View>
         </GradientContainer>
     )
 }
-
-export default ProtectWallet
+}

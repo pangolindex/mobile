@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image,Dimensions,ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import GradientContainer from '../../../components/GradientContainer'
 
@@ -14,17 +14,39 @@ import AuthHeader from '../../../components/AuthHeader'
 import Rectangle from '../../../components/Rectangle'
 import Button from '../../../components/button'
 
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+    listenOrientationChange as loc,
+    removeOrientationListener as rol
+  } from 'react-native-responsive-screen';
 
-const ProtectWallet = ({ navigation }) => {
+
+export default class App extends React.Component {
+    componentDidMount() {
+      loc(this);
+    }
+    
+    componentWillUnMount() {
+      rol();
+    }
+
+
+    
+  render() {
+    const {navigation} = this.props;
+    var width = Dimensions.get('window').width; //full width
+    var height = Dimensions.get('window').height; //full height
     return (
         <GradientContainer small>
             <View style={styles.container}>
-                <View style={Style.halfSpace} />
+            <ScrollView style={{width:'100%'}}>
+                {/* <View style={Style.halfSpace} /> */}
+                <View style={{paddingTop:Math.ceil(width) > Math.ceil(height) ? hp('5%') : hp('10%')}}>
                 <AuthHeader click={() => navigation.goBack()} />
                 <View style={styles.contentContainer}>
                     <View style={Style.flex} />
                     <View style={[Style.outer, { borderWidth: 0.3 }]}>
-
                         <View style={Style.outer}>
                             <Box small icon={icon.lock} />
                         </View>
@@ -57,9 +79,10 @@ const ProtectWallet = ({ navigation }) => {
                     <Icon style={styles.backIcon} name="arrow-forward-ios" />
 
                 </Rectangle>
+                </View>
+                </ScrollView>
             </View>
         </GradientContainer>
     )
 }
-
-export default ProtectWallet
+}
