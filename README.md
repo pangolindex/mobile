@@ -6,12 +6,9 @@ If Yarn was installed when the project was initialized, then dependencies will h
 
 ### `npx react-native run-android`
 
-Runs your app in development mode.
+Runs your cli app in documentation.
 
-Open it in the [React Native App](https://reactnative.dev/docs/environment-setup) on your phone to view it. It will reload if you save edits to your files, and you will see build errors and logs in the terminal.
-
-Sometimes you may need to reset or clear the React Native packager's cache. To do so, you can pass the `--reset-cache` flag to the start script:
-
+Open it in the [React Native App](https://reactnative.dev/docs/environment-setup) to view it.
 
 #### `npx react-native run-ios`
 
